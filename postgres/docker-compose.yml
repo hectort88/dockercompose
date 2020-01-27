@@ -5,7 +5,7 @@ services:
     ports:
       - 5800:80
     volumes: 
-      - "./data/pgadmin/var/lib/pgadmin:/var/lib/pgadmin"
+      - "./pgadmin/pgadmin/var/lib/pgadmin:/var/lib/pgadmin"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
