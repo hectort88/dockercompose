@@ -9,7 +9,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-   postgres11:
+  postgres11:
     image: "postgres:11-alpine"
     ports: 
       - 5432:5432
