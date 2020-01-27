@@ -1,0 +1,20 @@
+version: '3'
+services:
+  pgadmin:
+    image: "dpage/pgadmin4:latest"
+    ports:
+      - 5800:80
+    volumes: 
+      - "./data/pgadmin/var/lib/pgadmin:/var/lib/pgadmin"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+   postgres11:
+    image: "postgres:11-alpine"
+    ports: 
+      - 5432:5432
+    volumes:
+      - "./data/postgres11:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
