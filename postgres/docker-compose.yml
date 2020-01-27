@@ -1,7 +1,7 @@
 version: '3'
 services:
   pgadmin:
-    image: "dpage/pgadmin4:4.17"
+    image: "dpage/pgadmin4:latest"
     ports:
       - 5800:80
     volumes: 
