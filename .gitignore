@@ -2,3 +2,6 @@
 data/*
 postgres/pgadmin/*
 mariadb/data/*
+nginx/html/*
+nginx/nginx.conf
+!nginx/html/index.html
