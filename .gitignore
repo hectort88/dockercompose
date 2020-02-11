@@ -4,7 +4,7 @@ postgres/pgadmin/*
 mariadb/data/*
 mysql/data56/*
 mysql/data57/*
-mysql/data58/*
+mysql/data8/*
 nginx/html/*
 nginx/nginx.conf
 !nginx/html/index.html
