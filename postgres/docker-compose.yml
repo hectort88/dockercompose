@@ -18,3 +18,14 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  pgadmin:
+    image: "dpage/pgadmin4:latest"
+    ports:
+      - 5800:80
+    volumes: 
+      # pgAdmin runs as the pgadmin user (UID: 5050) in the pgadmin group (GID: 5050) in the container
+      # sudo chown -R 5050:5050 pgadmin
+      - ./pgadmin:/var/lib/pgadmin:z
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
