@@ -6,5 +6,6 @@ mysql/data56/*
 mysql/data57/*
 mysql/data8/*
 nginx/html/*
+mongo/data/*
 nginx/nginx.conf
 !nginx/html/index.html
