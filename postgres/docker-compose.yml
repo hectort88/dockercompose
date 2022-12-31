@@ -1,20 +1,11 @@
 version: '3'
 services:
-  postgres11:
-    image: "postgres:11"
+  postgres14:
+    image: "postgres:14"
     ports: 
-      - 5411:5432
+      - 5414:5432
     volumes:
-      - ./postgres11:/var/lib/postgresql/data:z
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  postgres12:
-    image: "postgres:12"
-    ports: 
-      - 5412:5432
-    volumes:
-      - ./postgres12:/var/lib/postgresql/data:z
+      - ./postgres14:/var/lib/postgresql/data:z
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
