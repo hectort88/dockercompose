@@ -1,9 +1,9 @@
 version: '3'
 services:
-  postgres14:
+  postgres16:
     image: "postgres:16"
     ports: 
-      - 5414:5432
+      - 5432:5432
     volumes:
       - ./postgres14:/var/lib/postgresql/data:z
     environment:
@@ -16,7 +16,9 @@ services:
     volumes: 
       # pgAdmin runs as the pgadmin user (UID: 5050) in the pgadmin group (GID: 5050) in the container
       # sudo chown -R 5050:5050 pgadmin
-      - ./pgadmin:/var/lib/pgadmin:z
+      - ${DATA_PATH_HOST}/pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres16
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
