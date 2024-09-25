@@ -1,10 +1,9 @@
-version: '3'
 services:
   mariadb:
     image: "mariadb:11"
     ports:
       - 3306:3306
     volumes: 
-      - ./data:/var/lib/mysql:z
+      - ./data:/var/lib/mysql:Z
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
