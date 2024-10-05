@@ -1,7 +1,6 @@
-version: '3'
 services:
-  postgres16:
-    image: "postgres:16"
+  postgres17:
+    image: "postgres:17"
     ports: 
       - 5432:5432
     volumes:
@@ -18,7 +17,7 @@ services:
       # sudo chown -R 5050:5050 pgadmin
       - ./pgadmin:/var/lib/pgadmin
     depends_on:
-      - postgres16
+      - postgres17
     user: '$UID:$GID'
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
