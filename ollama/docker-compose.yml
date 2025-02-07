@@ -1,24 +1,40 @@
 version: '3.9'
 
 services:
-  ollama:
-    image: ollama/ollama:latest # Replace with the correct image name if different
-    container_name: ollama-backend
+  open-webui:
+    image: backplane/open-webui:0-cuda # Replace with the actual image name
+    container_name: open-webui
+    restart: unless-stopped
     ports:
-      - "11434:11434" # Expose Ollama's default API port
+      - "8080:8080" # Adjust the port as needed
     volumes:
-      - ./ollama_data:/data # Persistent storage for models and data
-
-  webui:
-    image: your-webui-image:latest # Replace with your WebUI Docker image
-    container_name: ollama-webui
-    ports:
-      - "3000:3000" # Expose the WebUI on port 3000
+      - ./webui-data:/data # Mount any necessary volumes
     environment:
-      - REACT_APP_BACKEND_URL=http://ollama-backend:11434
-    depends_on:
-      - ollama
+      - CUDA_VISIBLE_DEVICES=0 # Adjust as needed for your GPU setup
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all # Use all available GPUs
 
-volumes:
-  ollama_data:
-    driver: local
+  ollama:
+    image: ollama/ollama:latest # Replace with the actual image name
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "8081:8081" # Adjust the port as needed
+    volumes:
+      - ./ollama-data:/data # Mount any necessary volumes
+    environment:
+      - CUDA_VISIBLE_DEVICES=0 # Adjust as needed for your GPU setup
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all # Use all available GPUs
+
+networks:
+  default:
+    driver: bridge
