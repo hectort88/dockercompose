@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  mariadb-master:
+    image: mariadb:latest
+    container_name: mariadb-master
+    hostname: mariadb-master
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_REPLICATION_USER: ${MYSQL_REPLICATION_USER}
+      MYSQL_REPLICATION_PASSWORD: ${MYSQL_REPLICATION_PASSWORD}
+    command: >
+      --server-id=${MARIADB_MASTER_SERVER_ID}
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --bind-address=0.0.0.0
+    ports:
+      - "${MARIADB_MASTER_PORT}:3306"
+    volumes:
+      - mariadb-master-data:/var/lib/mysql
+      - ./init-master.sh:/docker-entrypoint-initdb.d/init-master.sh
+    networks:
+      - mariadb-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mariadb-replica1:
+    image: mariadb:latest
+    container_name: mariadb-replica1
+    hostname: mariadb-replica1
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_REPLICATION_USER: ${MYSQL_REPLICATION_USER}
+      MYSQL_REPLICATION_PASSWORD: ${MYSQL_REPLICATION_PASSWORD}
+      MYSQL_MASTER_HOST: mariadb-master
+      MYSQL_MASTER_PORT: 3306
+    command: >
+      --server-id=${MARIADB_REPLICA1_SERVER_ID}
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --relay-log=relay-log
+      --read-only=1
+      --bind-address=0.0.0.0
+    ports:
+      - "${MARIADB_REPLICA1_PORT}:3306"
+    volumes:
+      - mariadb-replica1-data:/var/lib/mysql
+      - ./init-replica.sh:/docker-entrypoint-initdb.d/init-replica.sh
+    networks:
+      - mariadb-network
+    depends_on:
+      mariadb-master:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mariadb-replica2:
+    image: mariadb:latest
+    container_name: mariadb-replica2
+    hostname: mariadb-replica2
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_REPLICATION_USER: ${MYSQL_REPLICATION_USER}
+      MYSQL_REPLICATION_PASSWORD: ${MYSQL_REPLICATION_PASSWORD}
+      MYSQL_MASTER_HOST: mariadb-master
+      MYSQL_MASTER_PORT: 3306
+    command: >
+      --server-id=${MARIADB_REPLICA2_SERVER_ID}
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --relay-log=relay-log
+      --read-only=1
+      --bind-address=0.0.0.0
+    ports:
+      - "${MARIADB_REPLICA2_PORT}:3306"
+    volumes:
+      - mariadb-replica2-data:/var/lib/mysql
+      - ./init-replica.sh:/docker-entrypoint-initdb.d/init-replica.sh
+    networks:
+      - mariadb-network
+    depends_on:
+      mariadb-master:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mariadb-master-data:
+  mariadb-replica1-data:
+  mariadb-replica2-data:
+
+networks:
+  mariadb-network:
+    driver: bridge

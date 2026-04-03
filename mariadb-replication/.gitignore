@@ -1,0 +1,5 @@
+# Environment file with sensitive credentials
+.env
+
+# Database volumes
+data/
