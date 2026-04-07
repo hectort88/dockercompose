@@ -1,10 +1,10 @@
 services:
-  postgres18:
-    image: "postgres:18"
+  postgres16:
+    image: "postgres:16"
     ports: 
       - 5432:5432
     volumes:
-      - ./postgres18:/var/lib/postgresql/data:z
+      - ./postgres16:/var/lib/postgresql/data:z
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -17,7 +17,7 @@ services:
       # sudo chown -R 5050:5050 pgadmin
       - ./pgadmin:/var/lib/pgadmin
     depends_on:
-      - postgres18
+      - postgres16
     user: '$UID:$GID'
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
